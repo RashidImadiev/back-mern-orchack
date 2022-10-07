@@ -8,6 +8,7 @@ import checkAuth from "./utils/checkAuth.js";
 import * as UseController from "./controllers/UserController.js";
 import * as PostController from "./controllers/PostController.js";
 import handleValidationErrors from "./utils/handleValidationErrors.js";
+import fs from 'fs'
 
 mongoose
 	.connect(process.env.MONGODB_URI)
@@ -18,6 +19,9 @@ const app = express()
 
 const storage = multer.diskStorage({
 	destination: (_, __, cb) => {
+		if(!fs.existsSync('uploads')) {
+			fs.mkdirSync('uploads')
+		}
 		cb(null, 'uploads')
 	},
 	filename: (_, file, cb) => {
